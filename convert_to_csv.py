@@ -8,13 +8,13 @@ def main():
     # Loop through all folders from cwd
     dir_path = os.path.dirname(os.path.realpath(__file__))
     # find txt files
-    input_files = Path(dir_path).glob("*input*.txt")
-    solution_files = Path(dir_path).glob("*solution*.txt")
+    input_files = Path(dir_path).glob("*[!requirements]*.txt")
+    # solution_files = Path(dir_path).glob("*solution*.txt")
 
     # for each txt file
     # check if there is an equivalent csv file
     # covert the file if not
-    for input_file in chain(input_files, solution_files):
+    for input_file in chain(input_files):
         file_name = str(input_file)
         csv_file_name = file_name.replace(".txt", ".csv")
         if not os.path.isfile(csv_file_name):
