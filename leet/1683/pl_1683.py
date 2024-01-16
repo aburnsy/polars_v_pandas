@@ -2,12 +2,11 @@ import polars as pl
 from helpers import get_case_files, get_polars_solution
 
 
-def main(customers: str, orders: str) -> pl.DataFrame:
-    orders_df = pl.read_csv(orders)
+def main(input: str) -> pl.DataFrame:
     q = (
-        pl.scan_csv(customers)
-        .filter(~pl.col("id").is_in(orders_df.select("customerId")))
-        .select(pl.col("name").alias("Customers"))
+        pl.scan_csv(input)
+        .filter(pl.col("content").str.len_chars() > 15)
+        .select(pl.col("tweet_id"))
     )
     return q.collect()
 
@@ -16,7 +15,7 @@ if __name__ == "__main__":
     for case in get_case_files(__file__):
         print("****************************************")
         print("return value:")
-        print(main(case.inputs.customers, case.inputs.orders))
+        print(main(case.inputs.input))
         print("****************************************")
         print("solution value:")
         print(get_polars_solution(case.solution_file))
