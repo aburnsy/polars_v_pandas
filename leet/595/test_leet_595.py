@@ -1,35 +1,25 @@
 import pytest
 import pandas as pd
-import polars as pl
 import polars.testing as pt
-import os
-from pathlib import Path
-import pd_solve
-import pl_solve
+import pd_595
+import pl_595
+from helpers import get_case_files, get_pandas_solution, get_polars_solution
 
-CASES = [
-    val
-    for val in range(
-        1,
-        len(
-            list((Path(os.path.dirname(os.path.realpath(__file__))).rglob("input.csv")))
-        )
-        + 1,
-    )
-]
+cases_info = get_case_files(__file__)
+cases_ids = [f"Case {x.number}" for x in cases_info]
 
 
-@pytest.mark.parametrize("number", CASES)
-def test_pandas_case_x(number):
+@pytest.mark.parametrize("number,inputs,solution_file", cases_info, ids=cases_ids)
+def test_pandas(number, inputs, solution_file):
     pd.testing.assert_frame_equal(
-        pd_solve.main(f"leet\\595\\case{number}\\input.csv").reset_index(drop=True),
-        pd.read_csv(f"leet\\595\\case{number}\\solution.csv"),
+        pd_595.main(inputs.input).reset_index(drop=True),
+        get_pandas_solution(solution_file),
     )
 
 
-@pytest.mark.parametrize("number", CASES)
-def test_polars_case_x(number):
+@pytest.mark.parametrize("number,inputs,solution_file", cases_info, ids=cases_ids)
+def test_polars(number, inputs, solution_file):
     pt.assert_frame_equal(
-        pl_solve.main(f"leet\\595\\case{number}\\input.csv"),
-        pl.read_csv(f"leet\\595\\case{number}\\solution.csv"),
+        pl_595.main(inputs.input),
+        get_polars_solution(solution_file),
     )
