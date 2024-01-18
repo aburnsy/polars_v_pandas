@@ -5,8 +5,18 @@ from helpers import get_case_files, get_polars_solution
 def main(input: str) -> pl.DataFrame:
     q = (
         pl.scan_csv(input)
-        .filter((pl.col("low_fats") == "Y") & (pl.col("recyclable") == "Y"))
-        .select("product_id")
+        .select(
+            pl.col("employee_id"),
+            bonus=(
+                pl.when(
+                    (~pl.col("name").str.starts_with("M"))
+                    & (pl.col("employee_id") % 2 == 1)
+                )
+                .then(pl.col("salary"))
+                .otherwise(0)
+            ),
+        )
+        .sort("employee_id")
     )
     return q.collect()
 

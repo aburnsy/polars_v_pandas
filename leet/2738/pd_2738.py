@@ -4,7 +4,15 @@ from helpers import get_case_files, get_pandas_solution
 
 def main(input: str) -> pd.DataFrame:
     df = pd.read_csv(input)
-    return df[(df.low_fats == "Y") & (df.recyclable == "Y")][["product_id"]]
+    return pd.DataFrame(
+        {
+            "word": ["bull", "bear"],
+            "count": [
+                df["content"].str.contains(" bull ").sum(),
+                df["content"].str.contains(" bear ").sum(),
+            ],
+        }
+    )
 
 
 if __name__ == "__main__":

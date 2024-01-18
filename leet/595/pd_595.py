@@ -2,8 +2,8 @@ import pandas as pd
 from helpers import get_case_files, get_pandas_solution
 
 
-def main(input_file: str) -> pd.DataFrame:
-    df = pd.read_csv(input_file)
+def main(input: str) -> pd.DataFrame:
+    df = pd.read_csv(input)
     return df[(df.area >= 3000000) | (df.population >= 25000000)][
         ["name", "population", "area"]
     ]

@@ -1,14 +1,11 @@
-import polars as pl
-from helpers import get_case_files, get_polars_solution
+import pandas as pd
+from helpers import get_case_files, get_pandas_solution
 
 
-def main(input: str) -> pl.DataFrame:
-    q = (
-        pl.scan_csv(input)
-        .filter((pl.col("low_fats") == "Y") & (pl.col("recyclable") == "Y"))
-        .select("product_id")
-    )
-    return q.collect()
+def main(input: str) -> pd.DataFrame:
+    df = pd.read_csv(input)
+    df["name"] = df["name"].str.capitalize()
+    return df.sort_values("user_id")
 
 
 if __name__ == "__main__":
@@ -18,5 +15,5 @@ if __name__ == "__main__":
         print(main(case.inputs.input))
         print("****************************************")
         print("solution value:")
-        print(get_polars_solution(case.solution_file))
+        print(get_pandas_solution(case.solution_file))
         print("****************************************")

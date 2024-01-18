@@ -5,8 +5,8 @@ from helpers import get_case_files, get_polars_solution
 def main(input: str) -> pl.DataFrame:
     q = (
         pl.scan_csv(input)
-        .filter((pl.col("low_fats") == "Y") & (pl.col("recyclable") == "Y"))
-        .select("product_id")
+        .select(pl.col("user_id"), name=(pl.col("name").str.to_titlecase()))
+        .sort("user_id")
     )
     return q.collect()
 

@@ -3,10 +3,8 @@ from helpers import get_case_files, get_polars_solution
 
 
 def main(input: str) -> pl.DataFrame:
-    q = (
-        pl.scan_csv(input)
-        .filter((pl.col("low_fats") == "Y") & (pl.col("recyclable") == "Y"))
-        .select("product_id")
+    q = pl.scan_csv(input).filter(
+        pl.col("mail").str.contains(r"^[a-zA-Z]+[a-zA-Z0-9_\-.]*@leetcode.com")
     )
     return q.collect()
 

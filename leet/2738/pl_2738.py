@@ -5,8 +5,16 @@ from helpers import get_case_files, get_polars_solution
 def main(input: str) -> pl.DataFrame:
     q = (
         pl.scan_csv(input)
-        .filter((pl.col("low_fats") == "Y") & (pl.col("recyclable") == "Y"))
-        .select("product_id")
+        .select(pl.col("content"))
+        .with_columns(
+            [
+                pl.col("content").str.contains(" bull ").alias("bull"),
+                pl.col("content").str.contains(" bear ").alias("bear"),
+            ]
+        )
+        .drop("content")
+        .sum()
+        .melt(value_vars=["bull", "bear"], variable_name="word", value_name="count")
     )
     return q.collect()
 

@@ -2,9 +2,9 @@ import polars as pl
 from helpers import get_case_files, get_polars_solution
 
 
-def main(input_file: str) -> pl.DataFrame:
+def main(input: str) -> pl.DataFrame:
     q = (
-        pl.scan_csv(input_file)
+        pl.scan_csv(input)
         .filter((pl.col("area") >= 3000000) | (pl.col("population") >= 25000000))
         .select(pl.col("name", "population", "area"))
     )
